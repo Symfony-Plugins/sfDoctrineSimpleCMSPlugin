@@ -29,13 +29,13 @@ class sfSimpleCMSAdminActions extends autosfSimpleCMSAdminActions
   
   public function executeEditPage()
   {
-    $page = sfDoctrine::getTable('sfSimpleCMSPage')->find($this->getRequestParameter('id'));
+    $page = Doctrine_Manager::getInstance()->getTable('sfSimpleCMSPage')->find($this->getRequestParameter('id'));
     $this->redirect(sfSimpleCMSTools::urlForPage($page->getSlug(), 'edit=true', $this->getUser()->getCulture()));
   }
   
   public function executeTogglePublish()
   {
-    $page = sfDoctrine::getTable('sfSimpleCMSPage')->find($this->getRequestParameter('id'));
+    $page = Doctrine_Manager::getInstance()->getTable('sfSimpleCMSPage')->find($this->getRequestParameter('id'));
     $this->forward404Unless($page);
     
     $this->checkPublisherCredential();
@@ -52,7 +52,7 @@ class sfSimpleCMSAdminActions extends autosfSimpleCMSAdminActions
     {
       throw new Exception('Attempting to create a page with no slug. Please make sure you enter a slug in the form before submitting it.');
     }
-    $relative_page = sfDoctrine::getTable('sfSimpleCMSPage')->findBySlug($this->getRequestParameter('position'));
+    $relative_page = Doctrine_Manager::getInstance()->getTable('sfSimpleCMSPage')->findBySlug($this->getRequestParameter('position'));
     $positionType = $this->getRequestParameter('position_type');
     if($relative_page && $relative_page->getNode()->isRoot() && $positionType != 'under')
     {
@@ -85,7 +85,7 @@ class sfSimpleCMSAdminActions extends autosfSimpleCMSAdminActions
     $page = new sfSimpleCMSPage();
     $page->setSlug($this->getRequestParameter('slug'));
     $page->setTemplate($this->getRequestParameter('template'));
-    sfDoctrine::getTable('sfSimpleCMSPage')->getTree()->createRoot($page);
+    Doctrine_Manager::getInstance()->getTable('sfSimpleCMSPage')->getTree()->createRoot($page);
 
 
     $this->redirect('sfSimpleCMSAdmin/list?page='.$this->getRequestParameter('page', 1));
@@ -94,6 +94,6 @@ class sfSimpleCMSAdminActions extends autosfSimpleCMSAdminActions
   public function executeList()
   {
     parent::executeList();
-    $this->getRequest()->setAttribute('page_names', sfDoctrine::getTable('sfSimpleCMSPage')->getAllPagesWithLevel());
+    $this->getRequest()->setAttribute('page_names', Doctrine_Manager::getInstance()->getTable('sfSimpleCMSPage')->getAllPagesWithLevel());
   }
 }
