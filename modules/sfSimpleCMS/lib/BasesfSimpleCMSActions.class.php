@@ -63,7 +63,7 @@ class BasesfSimpleCMSActions extends sfActions
     if($this->getRequestParameter('edit') == 'true')
     {
       $this->checkEditorCredential();
-      $page = sfDoctrine::getTable('sfSimpleCMSPage')->findBySlug($this->getRequestParameter('slug', sfConfig::get('app_sfSimpleCMS_default_page', 'home')), $culture);
+      $page = Doctrine_Manager::getInstance()->getTable('sfSimpleCMSPage')->findBySlug($this->getRequestParameter('slug', sfConfig::get('app_sfSimpleCMS_default_page', 'home')), $culture);
       if ($page->isLockedForUserId($this->getUser()->getGuardUser()->id))
       {
         $this->getRequest()->setAttribute('lockedPage', $page);
@@ -73,7 +73,7 @@ class BasesfSimpleCMSActions extends sfActions
     }
     else
     {
-      $page = sfDoctrine::getTable('sfSimpleCMSPage')->findPublicBySlug($this->getRequestParameter('slug', sfConfig::get('app_sfSimpleCMS_default_page', 'home')), $culture);
+      $page = Doctrine_Manager::getInstance()->getTable('sfSimpleCMSPage')->findPublicBySlug($this->getRequestParameter('slug', sfConfig::get('app_sfSimpleCMS_default_page', 'home')), $culture);
     }
 
     $this->forward404Unless($page);
@@ -98,7 +98,7 @@ class BasesfSimpleCMSActions extends sfActions
   public function executeUpdateSlot()
   {
     $this->checkEditorCredential();
-    $page = sfDoctrine::getTable('sfSimpleCMSPage')->findBySlug($this->getRequestParameter('slug'));
+    $page = Doctrine_Manager::getInstance()->getTable('sfSimpleCMSPage')->findBySlug($this->getRequestParameter('slug'));
     $this->forward404Unless($page);
     
     if ($page->isLockedForUserId($this->getUser()->getGuardUser()->id))
@@ -149,7 +149,7 @@ class BasesfSimpleCMSActions extends sfActions
     $this->checkPublisherCredential();
     
     $slug = $this->getRequestParameter('slug');
-    $page = sfDoctrine::getTable('sfSimpleCMSPage')->findBySlug($slug);
+    $page = Doctrine_Manager::getInstance()->getTable('sfSimpleCMSPage')->findBySlug($slug);
     $this->forward404Unless($page);
     
     if ($page->isLockedForUserId($this->getUser()->getGuardUser()->id))
@@ -183,7 +183,7 @@ class BasesfSimpleCMSActions extends sfActions
     
     $page_id = $this->getRequestParameter('page_id');
     $culture = $this->getCulture();
-    $relative_page = sfDoctrine::getTable('sfSimpleCMSPage')->findBySlug($this->getRequestParameter('position'));
+    $relative_page = Doctrine_Manager::getInstance()->getTable('sfSimpleCMSPage')->findBySlug($this->getRequestParameter('position'));
     $positionType = $this->getRequestParameter('position_type');
     if($relative_page && $relative_page->getNode()->isRoot() && $positionType != 'under')
     {
@@ -194,7 +194,7 @@ class BasesfSimpleCMSActions extends sfActions
     if($page_id)
     {
       // update
-      $page = sfDoctrine::getTable('sfSimpleCMSPage')->find($page_id);
+      $page = Doctrine_Manager::getInstance()->getTable('sfSimpleCMSPage')->find($page_id);
       $this->forward404Unless($page);
       
       if ($page->isLockedForUserId($this->getUser()->getGuardUser()->id))
@@ -246,7 +246,7 @@ class BasesfSimpleCMSActions extends sfActions
     $this->checkEditorCredential();
 
     $culture = $this->getCulture();
-    $page = sfDoctrine::getTable('sfSimpleCMSPage')->findBySlug($this->getRequestParameter('slug'));
+    $page = Doctrine_Manager::getInstance()->getTable('sfSimpleCMSPage')->findBySlug($this->getRequestParameter('slug'));
     $this->forward404Unless($page);
     
     if ($page->isLockedForUserId($this->getUser()->getGuardUser()->id))
@@ -264,7 +264,7 @@ class BasesfSimpleCMSActions extends sfActions
     $this->checkEditorCredential();
 
     $culture = $this->getCulture();
-    $page = sfDoctrine::getTable('sfSimpleCMSPage')->findBySlug($this->getRequestParameter('slug'));
+    $page = Doctrine_Manager::getInstance()->getTable('sfSimpleCMSPage')->findBySlug($this->getRequestParameter('slug'));
     $this->forward404Unless($page);
     
     $page->breakLock();
@@ -279,7 +279,7 @@ class BasesfSimpleCMSActions extends sfActions
     $this->checkEditorCredential();
 
     $culture = $this->getCulture();
-    $page = sfDoctrine::getTable('sfSimpleCMSPage')->findBySlug($this->getRequestParameter('slug'));
+    $page = Doctrine_Manager::getInstance()->getTable('sfSimpleCMSPage')->findBySlug($this->getRequestParameter('slug'));
     $this->forward404Unless($page);
 
     $this->redirect(sfSimpleCMSTools::urlForPage($page->getSlug(), '', $culture));
@@ -290,7 +290,7 @@ class BasesfSimpleCMSActions extends sfActions
     $this->checkEditorCredential();
   
     $culture = $this->getCulture();
-    $page = sfDoctrine::getTable('sfSimpleCMSPage')->findBySlug($this->getRequestParameter('slug'));
+    $page = Doctrine_Manager::getInstance()->getTable('sfSimpleCMSPage')->findBySlug($this->getRequestParameter('slug'));
     $this->forward404Unless($page);
   
     if ($page->isLockedForUserId($this->getUser()->getGuardUser()->id))
@@ -311,7 +311,7 @@ class BasesfSimpleCMSActions extends sfActions
     $this->checkEditorCredential();
   
     $culture = $this->getCulture();
-    $page = sfDoctrine::getTable('sfSimpleCMSPage')->findBySlug($this->getRequestParameter('slug'));
+    $page = Doctrine_Manager::getInstance()->getTable('sfSimpleCMSPage')->findBySlug($this->getRequestParameter('slug'));
     $this->forward404Unless($page);
   
       if ($page->locked_by == $this->getUser()->getGuardUser()->id) {

@@ -40,10 +40,6 @@ sfSimpleCMSSlot:
     page_id:
       type:   integer
       length:   4
-      foreignClass: sfSimpleCMSPage
-      foreignReference: id
-      localName: sfSimpleCMSSlots
-      foreignName: page
       notnull:  true
       cascadeDelete: true
       primary: true
@@ -69,3 +65,8 @@ sfSimpleCMSSlot:
       type: timestamp
     updated_at: 
       type: timestamp
+  relations:
+    sfSimpleCMSSlots:
+      class: sfSimpleCMSPage
+      local: page_id
+      foreign: id

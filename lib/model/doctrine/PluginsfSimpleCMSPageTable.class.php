@@ -112,8 +112,11 @@ class PluginsfSimpleCMSPageTable extends Doctrine_Table
   {
     $tree = $this->getTree()->fetchTree();
     $page_names = array();
-    foreach ($tree as $page) {
+    if ($tree)
+    {
+      foreach ($tree as $page) {
         $page_names[$page->slug] = str_repeat($indent_string, $page->level).$page->slug;
+      }
     }
     return $page_names;
   }
