@@ -1,0 +1,42 @@
+= sfDoctrineSimpleCMSPlugin =
+
+== Overview ==
+
+This plugin is a Doctrine port of [wiki:sfSimpleCMSPlugin]. It is currently considered to be in an alpha state. It is not yet thoroughly tested.
+
+It allows you to add a simple Content Management System (CMS) to your symfony application with the following features:
+  - Uses Javascript and Ajax to provide a neat user experience
+  - Edit zones in pages
+  - Edit page URL (you can use / in page path)
+  - Edit content in the real context ('edit in place')
+  - Preview result
+  - Create and manage a tree structure for pages
+  - i18n ready (the interface is translated)
+  - l10n ready (a page can have different versions)
+  - support multiple templates
+  - Basic publication workflow
+  - Breadcrumb navigation  
+  - Edit locking
+  - User management is controlled through [wiki:sfGuardDoctrinePlugin]  
+
+It is not aimed at replacing full-featured CMS packages, but offers a lightweight alternative for when you build a website that has to contain pages often updated by special users. It is voluntarily simple, and very easy to configure; so it should fulfill most basic CMS requirements.
+
+Please note that this plugin is in active development. If you want to help and improve it, please contact Magnus Nordlander ( magnus@smilingplants.com ).
+
+This README is very incomplete. A lot of what is in the README for [wiki:sfSimpleCMSPlugin] applies. Configuration is similar to sfSimpleCMSPlugin as well, although there are a few additional options.
+
+== Requirements ==
+
+The prerequisites for using the `sfDoctrineSimpleCMS` plugin are:
+
+ - [wiki:sfDoctrine]
+ - [wiki:sfGuardDoctrinePlugin]
+ - Rich text editing uses tinyMCE. You must install tinyMCE if you want a wysiwyg interface for text editing.
+ 
+To install the plugin for a symfony project, the currently only way is to check it out from the subversion repository.
+
+== Changelog ==
+
+=== Trunk ===
+
+ * Magnus.Nordlander: Forked and ported sfSimpleCMSPlugin. Changes from up to r4947 have been backported before initial import
