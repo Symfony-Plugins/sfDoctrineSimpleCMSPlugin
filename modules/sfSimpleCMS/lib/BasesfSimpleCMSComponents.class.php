@@ -20,7 +20,7 @@ class BasesfSimpleCMSComponents extends sfComponents
 {
   public function executeEditorTools()
   {
-    $this->page_names = sfDoctrine::getTable('sfSimpleCMSPage')->getAllPagesWithLevel();
+    $this->page_names = Doctrine::getTable('sfSimpleCMSPage')->getAllPagesWithLevel();
     $this->slug = $this->getRequestParameter('slug');
     $this->culture = $this->getRequestParameter('sf_culture', sfConfig::get('app_sfSimpleCMS_default_culture', 'en'));
     $publisher_credentials = sfConfig::get('app_sfSimpleCMS_publisher_credential', false);
@@ -31,7 +31,7 @@ class BasesfSimpleCMSComponents extends sfComponents
   {
     $include_unpublished_pages = $this->getRequestParameter('edit') == 'true';
     $this->culture = $this->getCulture();
-    $this->level1_nodes = sfDoctrine::getTable('sfSimpleCMSPage')->getlevel1($include_unpublished_pages, $this->culture);
+    $this->level1_nodes = Doctrine::getTable('sfSimpleCMSPage')->getlevel1($include_unpublished_pages, $this->culture);
   }
 
   public function executeBreadcrumb()
@@ -42,7 +42,7 @@ class BasesfSimpleCMSComponents extends sfComponents
   public function executeLatestPages()
   {
     $include_unpublished_pages = $this->getRequestParameter('edit') == 'true';
-    $this->pages = sfDoctrine::getTable('sfSimpleCMSPage')->getLatest(sfConfig::get('app_sfSimpleCMS_max_pages_in_list', 5), $include_unpublished_pages);
+    $this->pages = Doctrine::getTable('sfSimpleCMSPage')->getLatest(sfConfig::get('app_sfSimpleCMS_max_pages_in_list', 5), $include_unpublished_pages);
     $this->culture = $this->getCulture();
   }
     
@@ -75,11 +75,11 @@ class BasesfSimpleCMSComponents extends sfComponents
         $this->CMS_error_msg = 'You need the editor credential to edit this content';
         return;
       }
-      $page = sfDoctrine::getTable('sfSimpleCMSPage')->findBySlug($this->slug, $culture);
+      $page = Doctrine::getTable('sfSimpleCMSPage')->findBySlug($this->slug, $culture);
     }
     else
     {
-      $page = sfDoctrine::getTable('sfSimpleCMSPage')->findPublicBySlug($this->slug, $culture);
+      $page = Doctrine::getTable('sfSimpleCMSPage')->findPublicBySlug($this->slug, $culture);
     }
 
     if (!$page)

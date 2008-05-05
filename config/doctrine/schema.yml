@@ -1,72 +1,56 @@
+---
 sfSimpleCMSPage:
-  tableName:        sf_simple_cms_page
+  tableName: sf_simple_cms_page
+  actAs: [Timestampable, Sluggable]
   options:
-      treeImpl: NestedSet
+    treeImpl: NestedSet
   columns:
     id:
-      type: integer
-      length: 4
+      type: integer(4)
       primary: true
       autoincrement: true
-    created_at: 
-      type: timestamp
-    updated_at: 
-      type: timestamp  
-    slug:
-      type: string
-      length: 255
-      notnull: true
     topic_id:
       type: integer
     template:
-      type: string
-      length: 100
+      type: string(100)
     is_published:
       type: boolean
       length: null
     locked_by:
-      type: integer
-      length: 4
+      type: integer(4)
       notnull: false
-  relation:
-    lockedPages:
+  relations:
+    LockedBy:
       class: sfGuardUser
-      foreign: id
       local: locked_by
+      foreign: id
+      foreignAlias: LockedPages
 
 sfSimpleCMSSlot:
-  tableName:      sf_simple_cms_slot
+  tableName: sf_simple_cms_slot
+  actAs: [Timestampable]
   columns:
     page_id:
-      type:   integer
-      length:   4
+      type:   integer(4)
       notnull:  true
-      cascadeDelete: true
       primary: true
     culture:
-      type: string
-      length: 7
+      type: string(7)
       notnull: true
       primary: true
     name:
-      type: string
-      length: 100
+      type: string(100)
       notnull: true
       primary: true
     type:
-      type: string
-      length: 100
+      type: string(100)
       notnull: true
       default: Text
     value:
-      type: string
-      length: 4000
-    created_at: 
-      type: timestamp
-    updated_at: 
-      type: timestamp
+      type: string(4000)
   relations:
-    sfSimpleCMSSlots:
-      class: sfSimpleCMSPage
+    sfSimpleCMSPage:
       local: page_id
       foreign: id
+      onDelete: CASCADE
+      foreignAlias: sfSimpleCMSSlots
