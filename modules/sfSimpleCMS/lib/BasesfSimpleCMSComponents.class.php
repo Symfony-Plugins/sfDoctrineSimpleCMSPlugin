@@ -91,7 +91,7 @@ class BasesfSimpleCMSComponents extends sfComponents
     $this->page = $page;
     $this->culture = $culture;
     $this->getRequest()->setAttribute('culture', $culture);
-    $this->templatePath = sfLoader::getTemplatePath('sfSimpleCMS', $this->page->getTemplate().'Template.php');
+    $this->templatePath = sfProjectConfiguration::getActive()->getTemplatePath('sfSimpleCMS', $this->page->getTemplate().'Template.php');
     sfConfig::set('app_sfSimpleCMS_disable_editor_toolbar', true);
   }
 }

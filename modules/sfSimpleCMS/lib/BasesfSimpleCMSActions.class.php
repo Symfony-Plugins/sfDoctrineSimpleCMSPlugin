@@ -77,7 +77,7 @@ class BasesfSimpleCMSActions extends sfActions
     {
       $this->checkEditorCredential();
       $page = Doctrine::getTable('sfSimpleCMSPage')->findBySlug($this->getRequestParameter('slug', sfConfig::get('app_sfSimpleCMS_default_page', 'home')), $culture);
-      if ($this->getUser()->getGuardUser() && $page->isLockedForUserId($this->getUser()->getGuardUser()->id))
+      if ($this->getUser()->isAuthenticated() && $page->isLockedForUserId($this->getUser()->getGuardUser()->id))
       {
         $this->getRequest()->setAttribute('lockedPage', $page);
         $this->getRequest()->setAttribute('culture', $culture);
@@ -210,7 +210,7 @@ class BasesfSimpleCMSActions extends sfActions
       $page = Doctrine::getTable('sfSimpleCMSPage')->find($page_id);
       $this->forward404Unless($page);
       
-      if ($page->isLockedForUserId($this->getUser()->getGuardUser()->id))
+      if ($this->getUser()->isAuthenticated() && $page->isLockedForUserId($this->getUser()->getGuardUser()->id))
       {
         throw new Exception('This page is locked by ' . $page->lockingUser);
       }
@@ -262,7 +262,7 @@ class BasesfSimpleCMSActions extends sfActions
     $page = Doctrine::getTable('sfSimpleCMSPage')->findBySlug($this->getRequestParameter('slug'));
     $this->forward404Unless($page);
     
-    if ($page->isLockedForUserId($this->getUser()->getGuardUser()->id))
+    if ($this->getUser()->isAuthenticated() && $page->isLockedForUserId($this->getUser()->getGuardUser()->id))
     {
       throw new Exception('This page is locked by ' . $page->lockingUser);
     }
@@ -307,7 +307,7 @@ class BasesfSimpleCMSActions extends sfActions
     $this->forward404Unless($page);
     if ($this->getUser()->isAuthenticated())
     {
-      if ($page->isLockedForUserId($this->getUser()->getGuardUser()->id))
+      if ($this->getUser()->isAuthenticated() && $page->isLockedForUserId($this->getUser()->getGuardUser()->id))
       {
         throw new Exception('This page is locked by ' . $page->lockingUser);
       }

@@ -15,7 +15,7 @@
  * @author  François Zaninotto <francois.zaninotto@symfony-project.com>
  * @author  Magnus Nordlander, smiling plants <magnus@smilingplants.com>
  */
-class PluginsfSimpleCMSSlot extends BasesfSimpleCMSSlot
+abstract class PluginsfSimpleCMSSlot extends BasesfSimpleCMSSlot
 {
 
 }

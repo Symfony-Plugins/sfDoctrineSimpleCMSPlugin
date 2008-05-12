@@ -80,7 +80,7 @@ function sf_simple_cms_slot($page, $slot, $default_text = null, $default_type = 
       'success'     => 'Element.show(\'slot_'.$slot.'\');
                         Element.hide(\'edit_'.$slot.'\');
                        '.visual_effect('highlight', 'slot_'.$slot),
-      '409'       => 'Element.show(\'locking_'.$slot.'\');
+      '409'         => 'Element.show(\'locking_'.$slot.'\');
                         var affected = document.getElementsByClassName(\'user-name\');
                         for (var i = 0; i < affected.length; i++)
                         {

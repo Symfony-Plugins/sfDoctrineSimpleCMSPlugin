@@ -15,7 +15,7 @@
  * @author  François Zaninotto <francois.zaninotto@symfony-project.com>
  * @author  Magnus Nordlander, smiling plants <magnus@smilingplants.com>
  */
-class PluginsfSimpleCMSPage extends BasesfSimpleCMSPage
+abstract class PluginsfSimpleCMSPage extends BasesfSimpleCMSPage
 {
   protected $localizations = null,
             $title         = '',
