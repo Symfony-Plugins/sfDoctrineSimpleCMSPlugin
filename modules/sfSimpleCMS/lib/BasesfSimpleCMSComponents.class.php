@@ -1,6 +1,6 @@
 <?php
 /*
-* This file is part of the sfDoctrineSimpleCMS package, based on the 
+* This file is part of the sfDoctrineSimpleCMS package, based on the
 * sfSimpleCMS package.
 * (c) 2007 François Zaninotto <francois.zaninotto@symfony-project.com>
 * (c) 2007 Magnus Nordlander, smiling plants <magnus@smilingplants.com>
@@ -8,7 +8,7 @@
 * For the full copyright and license information, please view the LICENSE
 * file that was distributed with this source code.
 */
- 
+
 /**
  *
  * @package sfDoctrineSimpleCMS
@@ -26,7 +26,7 @@ class BasesfSimpleCMSComponents extends sfComponents
     $publisher_credentials = sfConfig::get('app_sfSimpleCMS_publisher_credential', false);
     $this->is_publisher = (!$publisher_credentials  || $this->getUser()->hasCredential($publisher_credentials));
   }
-  
+
   public function executeMainNavigation()
   {
     $include_unpublished_pages = $this->getRequestParameter('edit') == 'true';
@@ -38,14 +38,14 @@ class BasesfSimpleCMSComponents extends sfComponents
   {
     $this->pages = $this->page->getNode()->getAncestors();
   }
-  
+
   public function executeLatestPages()
   {
     $include_unpublished_pages = $this->getRequestParameter('edit') == 'true';
     $this->pages = Doctrine::getTable('sfSimpleCMSPage')->getLatest(sfConfig::get('app_sfSimpleCMS_max_pages_in_list', 5), $include_unpublished_pages);
     $this->culture = $this->getCulture();
   }
-    
+
   protected function getCulture()
   {
     if(sfConfig::get('app_sfSimpleCMS_use_l10n', false))
@@ -57,17 +57,17 @@ class BasesfSimpleCMSComponents extends sfComponents
       return sfConfig::get('app_sfSimpleCMS_default_culture', 'en');
     }
   }
-  
+
   protected function checkEditorCredential()
   {
     $editor_credentials = sfConfig::get('app_sfSimpleCMS_editor_credential', false);
     return $editor_credentials ? $this->getUser()->hasCredential($editor_credentials) : true;
   }
-    
+
   public function executeEmbed()
   {
     $culture = $this->getCulture();
-    
+
     if($this->getRequestParameter('edit') == 'true')
     {
       if(!$this->checkEditorCredential())
@@ -87,11 +87,10 @@ class BasesfSimpleCMSComponents extends sfComponents
       $this->CMS_error_msg = sprintf('The page %s does not exist in culture %c', $this->slug, $culture);
       return;
     }
-    
+
     $this->page = $page;
     $this->culture = $culture;
     $this->getRequest()->setAttribute('culture', $culture);
     $this->templatePath = sfProjectConfiguration::getActive()->getTemplatePath('sfSimpleCMS', $this->page->getTemplate().'Template.php');
-    sfConfig::set('app_sfSimpleCMS_disable_editor_toolbar', true);
   }
 }
