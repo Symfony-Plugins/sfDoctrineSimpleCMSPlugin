@@ -157,6 +157,27 @@ class BasesfSimpleCMSActions extends sfActions
     return $this->renderText($ret);
   }
 
+  public function executeUpdateInlineObject()
+  {
+    $type = $this->getRequestParameter('type');
+    $id = $this->getRequestParameter('id');
+    $field = $this->getRequestParameter('field');
+    $value = $this->getRequestParameter('slot_content');
+    $record = Doctrine::getTable($type)->find($id);
+    $record->$field = $value;
+    $record->save();
+    return sfView::NONE;
+  }
+
+  public function executeDeleteInlineObject()
+  {
+    $type = $this->getRequestParameter('type');
+    $id = $this->getRequestParameter('id');
+    $record = Doctrine::getTable($type)->find($id);
+    $record->delete();
+    return sfView::NONE;
+  }
+
   public function executeTogglePublish()
   {
     $this->checkPublisherCredential();

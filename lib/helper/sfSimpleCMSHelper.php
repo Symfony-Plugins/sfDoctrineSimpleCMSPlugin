@@ -132,3 +132,111 @@ function sf_simple_cms_slot($page, $slot, $default_text = null, $default_type = 
     echo $slot_type->getSlotValue($slot_object, ESC_RAW);
   }
 }
+
+function object_doctrine_inline_edit($object, $field, $display_text = null, $default_text = null, $slot_type_name = 'Text')
+{
+  $context = sfContext::getInstance();
+  $request = $context->getRequest();
+  
+  $culture = $request->getAttribute('culture');
+  $slot_value = $object->$field;
+  $slot_object = new sfSimpleCMSSlot();
+  $slot_object->setType($slot_type_name);
+  $slot_object->setValue($object->$field);
+
+  $slot = get_class($object). '_' . $field . '_' . implode('_', $object->identifier());
+  $slot_type_class = 'sfSimpleCMSSlot'.$slot_type_name;
+  $slot_type = new $slot_type_class();
+  $editor_credentials = sfConfig::get('app_sfSimpleCMS_editor_credential', false);
+
+  if ($editor_credentials && sfContext::getInstance()->getUser()->hasCredential($editor_credentials) && $request->getParameter('edit') == 'true' && !$request->getParameter('preview'))
+  {
+    $editor_credentials = sfConfig::get('app_sfSimpleCMS_editor_credential', false);
+
+    $html = '<div class="editable_slot" title="'.__('Double-click to edit').'" id="slot_'.$slot.'" onDblClick="Element.show(\'edit_'.$slot.'\');Element.hide(\'slot_'.$slot.'\');">';
+    
+    if($slot_value)
+    {
+      if ($display_text)
+      {
+        $html .= $display_text;
+      } else {
+        // Get slot value from the slot type object
+        $html .= $slot_type->getSlotValue($slot_object);
+      }
+    }
+    else
+    {
+      // default text
+      $html .= $default_text ? $default_text : sfConfig::get('app_sfSimpleCMS_default_text', __('[add text here]'));
+    }
+    
+    $html .= '</div>';
+
+    $html .= form_remote_tag(array(
+      'url'         => 'sfSimpleCMS/updateInlineObject',
+      'script'      => 'true',
+      'update'      => 'slot_'.$slot,
+      'success'     => 'window.location.reload()',
+      '409'         => 'Element.show(\'locking_'.$slot.'\');
+                        var affected = document.getElementsByClassName(\'user-name\');
+                        for (var i = 0; i < affected.length; i++)
+                        {
+                          affected[i].update(json.username);
+                        }'
+      ), array(
+        'class'     => 'edit_slot',
+        'id'        => 'edit_'.$slot,
+        'style'     => 'display:none'
+    ));
+    $html .= input_hidden_tag('type', get_class($object));
+    $html .= input_hidden_tag('id', current($object->identifier()));
+    $html .= input_hidden_tag('field', $field);
+    // Get slot editor from the slot type object
+    $html .= $slot_type->getSlotEditor($slot_object);
+    /*
+    echo label_for('slot_type', __('Type: '));
+    echo select_tag(
+      'slot_type', 
+      options_for_select(
+        sfConfig::get('app_sfSimpleCMS_slot_types', array(
+          'Text'     => __('Simple Text'),
+          'RichText' => __('Rich text'),
+          'Php'      => __('PHP code'),
+          'Image'    => __('Image'),
+          'Modular'  => __('List of components'))),
+        $slot_type_name
+      )
+    );
+    */
+    if($rich = sfConfig::get('app_sfSimpleCMS_rich_editing', false))
+    {
+      // activate rich text if global rich_editing is true and is the current slot is RichText
+      $rich = ($slot_type_name == 'RichText');
+    }    
+    $html .= submit_tag('update', array(
+      'onclick' => ($rich ? 'tinymceDeactivate()'.';submitForm(\'edit_'. $slot .'\'); return false' : ''),
+      'class' => 'submit_tag'
+    ));
+    $html .= button_to_function('cancel', 'Element.hide(\'edit_'.$slot.'\');Element.show(\'slot_'.$slot.'\');', 'class=submit_tag');
+    
+    $html .= '</form>';
+    return $html;
+  }
+  else
+  {
+    return $slot_value;
+  }
+}
+
+function object_doctrine_inline_delete($object)
+{
+  $editor_credentials = sfConfig::get('app_sfSimpleCMS_editor_credential', false);
+  $user = sfContext::getInstance()->getUser();
+  $request = sfContext::getInstance()->getRequest();
+  if ($editor_credentials && $user->hasCredential($editor_credentials) && $request->getParameter('edit') == 'true' && !$request->getParameter('preview'))
+  {
+    $url = 'sfSimpleCMS/deleteInlineObject?type=' . get_class($object) . '&id=' . current($object->identifier());
+    return link_to_remote(image_tag('/sf/sf_admin/images/delete.png'), array('confirm' => 'Are you sure?', 'url' => $url, 'success' => 'window.location.reload()'));
+  }
+}
