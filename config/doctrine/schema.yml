@@ -1,9 +1,7 @@
 ---
 sfSimpleCMSPage:
   tableName: sf_simple_cms_page
-  actAs: [Timestampable, Sluggable]
-  options:
-    treeImpl: NestedSet
+  actAs: [Timestampable, Sluggable, NestedSet]
   columns:
     id:
       type: integer(4)
