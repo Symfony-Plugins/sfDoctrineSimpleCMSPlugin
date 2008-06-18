@@ -76,8 +76,7 @@ sfSimpleCMSSlot:
     name:         slot3
     type:         Modular
     value:        |
-      test1:
-        component: sfSimpleCMS/latestPages
+      test1:      { component: sfSimpleCMS/latestPages }
 
   about_en_title:
     sfSimpleCMSPage:         about-slots
@@ -171,8 +170,7 @@ sfSimpleCMSSlot:
     name:         slot3
     type:         Modular
     value:        |
-      test1:
-        component: sfSimpleCMS/latestPages
+      test1:      { component: sfSimpleCMS/latestPages }
               
   faq_en_title:
     sfSimpleCMSPage:         faq
