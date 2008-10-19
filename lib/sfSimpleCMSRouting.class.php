@@ -27,15 +27,15 @@ class sfSimpleCMSRouting
     $r = $event->getSubject();
 
     // preprend our routes
-    $r->prependRoute('sf_cms_delete', '/cms_delete/:sf_culture/:slug', array('module' => 'sfSimpleCMS', 'action' => 'delete'), array('slug' => '.*'));
-    $r->prependRoute('sf_cms_toggle_publish', '/cms_publish/:slug', array('module' => 'sfSimpleCMS', 'action' => 'togglePublish'), array('slug' => '.*'));
+    $r->prependRoute('sf_cms_delete', new sfRoute('/cms_delete/:sf_culture/:slug', array('module' => 'sfSimpleCMS', 'action' => 'delete'), array('slug' => '.*')));
+    $r->prependRoute('sf_cms_toggle_publish', new sfRoute('/cms_publish/:slug', array('module' => 'sfSimpleCMS', 'action' => 'togglePublish'), array('slug' => '.*')));
     if(sfConfig::get('app_sfSimpleCMS_use_l10n', false))
     {
-      $r->prependRoute('sf_cms_show', '/cms/:sf_default_culture/:slug', array('module' => 'sfSimpleCMS', 'action' => 'show'), array('slug' => '.*'));
+      $r->prependRoute('sf_cms_show', new sfRoute('/cms/:sf_default_culture/:slug', array('module' => 'sfSimpleCMS', 'action' => 'show'), array('slug' => '.*')));
     }
     else
     {
-      $r->prependRoute('sf_cms_show', '/cms/:slug', array('module' => 'sfSimpleCMS', 'action' => 'show'), array('slug' => '.*'));
+      $r->prependRoute('sf_cms_show', new sfRoute('/cms/:slug', array('module' => 'sfSimpleCMS', 'action' => 'show'), array('slug' => '.*')));
     }
   }
 }
